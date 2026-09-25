@@ -47,4 +47,19 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var list<string>
+     */
+    protected $appends = ['name'];
+
+    /**
+     * Get user's display name.
+     */
+    public function getNameAttribute(): string
+    {
+        return $this->username ?? '';
+    }
 }

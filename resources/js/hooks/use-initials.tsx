@@ -7,11 +7,15 @@ function getInitial(name: string): string {
 }
 
 export function useInitials(): GetInitialsFn {
-    return useCallback((fullName: string): string => {
+    return useCallback((fullName?: string | null): string => {
+        if (!fullName || typeof fullName !== 'string') {
+            return 'U';
+        }
+
         const names = fullName.trim().split(/\s+/u).filter(Boolean);
 
         if (names.length === 0) {
-            return '';
+            return 'U';
         }
 
         if (names.length === 1) {
