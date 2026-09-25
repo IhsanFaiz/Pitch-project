@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('group', function (Blueprint $table) {
             $table->id();
-            $table->string("group_name");
+            $table->string('group_name');
+            $table->string('business_name')->nullable();
+            $table->string('business_field')->nullable();
+            $table->string('business_category')->nullable();
+            $table->text('description')->nullable();
+            $table->text('product_service')->nullable();
+            $table->text('target_market')->nullable();
+            $table->string('status')->default('draft');
+            $table->timestamps();
         });
     }
 

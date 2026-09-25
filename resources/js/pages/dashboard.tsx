@@ -63,102 +63,26 @@ export interface DashboardProps {
     pitchingResult?: PitchingResult | null;
 }
 
-const DEFAULT_GROUP: GroupDetails = {
-    name: 'Innovation',
-    leaderName: 'Amara Okafor',
-    nim: '102067543290',
-    studyProgram: 'D3 Rekayasa Perangkat Lunak Aplikasi',
-    members: [
-        { id: '1', name: 'Putri Aulia', nim: '607062430010' },
-        { id: '2', name: 'Putri Aulia', nim: '607062430010' },
-        { id: '3', name: 'Putri Aulia', nim: '607062430010' },
-        { id: '4', name: 'Putri Aulia', nim: '607062430010' },
-    ],
-};
-
-const DEFAULT_BOOKING: PitchBooking = {
-    date: 'Tuesday, 20 October 2026',
-    time: '11:00-11:30 (WIB)',
-    groupName: 'Innovation',
-    reviewer: 'Erna Hikmawati (EHK)',
-    proofUrl: '#',
-};
-
-const DEFAULT_JOURNEY: JourneyStep[] = [
-    {
-        id: 'registration',
-        title: 'Registration',
-        status: 'completed',
-        statusLabel: 'Completed',
-    },
-    {
-        id: 'schedule_booking',
-        title: 'Schedule booking',
-        status: 'completed',
-        statusLabel: 'Completed',
-    },
-    {
-        id: 'confirmation',
-        title: 'Confirmation',
-        status: 'process',
-        statusLabel: 'Process',
-    },
-    {
-        id: 'disbursement',
-        title: 'Disbursement',
-        status: 'not-started',
-        statusLabel: 'Not started',
-    },
-];
-
-const DEFAULT_RESULT: PitchingResult = {
-    status: 'PENDING',
-    moderationNote:
-        'Your lecturer will publish the outcome after panel moderation. Final treatments will appear as PASSED or FAILED, with feedback and next steps.',
-};
-
 export default function Dashboard({
-    group: initialGroup,
-    pitchBooking: initialPitchBooking,
-    journeySteps: initialJourneySteps,
-    pitchingResult: initialPitchingResult,
+    group,
+    pitchBooking,
+    journeySteps = [],
+    pitchingResult,
 }: DashboardProps) {
     const { auth } = usePage<{ auth: { user: User } }>().props;
     const user = auth?.user;
-    const userGreetingName = user?.username || user?.name || 'Amara';
+    const userGreetingName = user?.username || user?.name || 'Mahasiswa';
 
-    // Allow user to toggle between populated state and empty state to test dynamic behavior
-    const [simulateEmpty, setSimulateEmpty] = useState(false);
-
-    const activeGroup = simulateEmpty
-        ? null
-        : initialGroup !== undefined
-          ? initialGroup
-          : DEFAULT_GROUP;
-
-    const activeBooking = simulateEmpty
-        ? null
-        : initialPitchBooking !== undefined
-          ? initialPitchBooking
-          : DEFAULT_BOOKING;
-
-    const activeJourney = simulateEmpty
-        ? []
-        : initialJourneySteps !== undefined
-          ? initialJourneySteps
-          : DEFAULT_JOURNEY;
-
-    const activeResult = simulateEmpty
-        ? null
-        : initialPitchingResult !== undefined
-          ? initialPitchingResult
-          : DEFAULT_RESULT;
+    const activeGroup = group ?? null;
+    const activeBooking = pitchBooking ?? null;
+    const activeJourney = journeySteps ?? [];
+    const activeResult = pitchingResult ?? null;
 
     return (
         <>
             <Head title="Dashboard" />
 
-            <div className="flex flex-col gap-6 lg:gap-7">
+            <div className="flex flex-col gap-6 lg:gap-7 pb-10">
                 {/* Header Section */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
@@ -171,16 +95,6 @@ export default function Dashboard({
                     </div>
 
                     <div className="flex items-center gap-3 self-end sm:self-center">
-                        {/* Interactive toggle to test empty vs populated state */}
-                        <button
-                            type="button"
-                            onClick={() => setSimulateEmpty(!simulateEmpty)}
-                            className="text-[11px] font-medium px-3 py-1.5 rounded-full border border-neutral-200 bg-white/80 hover:bg-neutral-100 text-neutral-700 dark:border-neutral-700 dark:bg-card dark:text-neutral-300 transition-colors shadow-2xs cursor-pointer"
-                            title="Klik untuk melihat tampilan data terisi vs data kosong"
-                        >
-                            {simulateEmpty ? 'Mode: Data Kosong (Ubah ke Demo)' : 'Mode: Demo (Ubah ke Data Kosong)'}
-                        </button>
-
                         {/* Notification Bell */}
                         <div className="relative flex size-10 items-center justify-center rounded-full hover:bg-neutral-200/50 dark:hover:bg-neutral-800 transition-colors cursor-pointer">
                             <Bell className="size-5 text-[#7A1418] dark:text-rose-300" />
